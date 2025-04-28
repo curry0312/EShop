@@ -1,0 +1,142 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "cockroachdb"
+  url      = env("DATABASE_URL")
+}
+
+model images {
+  id  String @id @default(uuid()) 
+  url String
+
+  userId String? @unique
+  users  users?  @relation(fields: [userId], references: [id])
+
+  sellerId String?
+  sellers  sellers? @relation(fields: [sellerId], references: [id])
+
+  shopId String? @unique
+  shop   shops?  @relation(fields: [shopId], references: [id])
+
+  productsId String? 
+  products   products? @relation(fields: [productsId], references: [id])
+}
+
+model users {
+  id          String        @id @default(uuid()) 
+  name        String
+  email       String        @unique
+  password    String?
+  following   String[]
+  avatar      images[]
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  shopReviews shopReviews[]
+}
+
+model sellers {
+  id           String @id @default(uuid()) 
+  name         String
+  email        String @unique
+  password     String
+  phone_number String
+  country      String
+
+  shop   shops?
+  shopId String? @unique
+
+  discount_codes discount_codes[]
+
+  products products[]
+
+  images images[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model shopReviews {
+  id        String   @id @default(uuid()) 
+  userId    String
+  users     users    @relation(fields: [userId], references: [id])
+  shopId    String
+  shop      shops    @relation(fields: [shopId], references: [id])
+  ratings   Float    @default(0)
+  review    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model shops {
+  id           String        @id @default(uuid()) 
+  name         String
+  bio          String
+  category     String
+  address      String
+  avatar       images[]
+  coverBanner  String?
+  openingHours String?
+  website      String?
+  ratings      Float         @default(0)
+  reviews      shopReviews[]
+
+  seller   sellers @relation(fields: [sellerId], references: [id])
+  sellerId String  @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  products products[]
+}
+
+model site_config {
+  id         String   @id @default(uuid()) 
+  categories String[]
+}
+
+model discount_codes {
+  id            String  @id @default(uuid()) 
+  title         String
+  discountValue String
+  discountCode  String  @unique
+  discountType  String
+  sellerId      String
+  seller        sellers @relation(fields: [sellerId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  products products[]
+}
+
+model products {
+  id                    String          @id @default(uuid()) 
+  title                 String
+  price                 String
+  category              String
+  description           String
+  tags                  String[]
+  stock                 String
+  cash_on_delivery      String
+  custom_specifications Json?
+  images                images[]
+  ratings               Float           @default(0)
+  sellerId              String
+  seller                sellers         @relation(fields: [sellerId], references: [id])
+  discount_codesId      String?
+  discount_codes        discount_codes? @relation(fields: [discount_codesId], references: [id])
+  shopId                String
+  shop                  shops           @relation(fields: [shopId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
