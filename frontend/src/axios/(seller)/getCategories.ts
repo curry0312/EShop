@@ -8,7 +8,7 @@ type GetCategoriesResponse = {
 
 export const getCategories = async (): Promise<GetCategoriesResponse> => {
   const res = await axiosInstance.get(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/product/get-categories`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/product/seller/get-categories`,
     {
       withCredentials: true,
     }

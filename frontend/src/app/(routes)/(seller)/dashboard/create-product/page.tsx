@@ -13,6 +13,7 @@ import { createProduct } from "@/axios/(seller)/createProduct";
 import ImagePlaceHolder from "@/components/(seller)/ImagePlaceHolder";
 import Input from "@/components/Input";
 import CustomSpecifications from "@/components/CustomSpecifications";
+import { getAccessToken } from "@/libs/utils/getAccessToken";
 
 const CreateProductSchema = z.object({
   title: z.string().min(1, "Name is required"),
@@ -91,7 +92,7 @@ const CreateProductSchema = z.object({
 
 export type CreateProductSchemaType = z.infer<typeof CreateProductSchema>;
 
-export default function page() {
+export default function Page() {
   const {
     register,
     handleSubmit,
@@ -141,7 +142,10 @@ export default function page() {
   const categories = data?.categories || [];
 
   const createProductMutation = useMutation({
-    mutationFn: (data: CreateProductSchemaType) => createProduct(data),
+    mutationFn: (data: CreateProductSchemaType) =>
+      createProduct({
+        data
+      }),
     onSuccess: (data) => {
       console.log("data create successfully", data);
       toast.success("Product created successfully");

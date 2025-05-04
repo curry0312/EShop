@@ -23,7 +23,7 @@ const FormSchema = z.object({
 
 type FormSchemaType = z.infer<typeof FormSchema>;
 
-export default function page() {
+export default function Page() {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [canResend, setCanResend] = useState<boolean>(true);
   const [timer, setTimer] = useState(60);

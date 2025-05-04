@@ -1,4 +1,4 @@
-import axios, { AxiosError, AxiosResponse } from "axios";
+import axios, { AxiosResponse } from "axios";
 
 export type VerifyUserParams = {
   userData: UserDataPayload;
@@ -32,7 +32,7 @@ export const verifyUser = async ({
 
   try {
     const response: AxiosResponse<VerifyUserResponse> = await axios.post(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/auth/verify-user`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/auth/user/verify`,
       {
         ...userData,
         otp: otp,

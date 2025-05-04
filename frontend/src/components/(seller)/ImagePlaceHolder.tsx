@@ -8,7 +8,7 @@ type Props = {
   onImageChange: (file: File | null) => void;
   onRemove: (index: number) => void;
   defaultImage?: string | null;
-  index: any;
+  index: number | null;
   setOpenImageModal: (opemImageModal: boolean) => void;
 };
 

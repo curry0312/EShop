@@ -1,3 +1,4 @@
+import { Sellers } from "@/types/database-type";
 import axios, { AxiosResponse } from "axios";
 
 export type VerifySellerParams = {
@@ -18,7 +19,7 @@ interface SellerDataPayload {
 /** Shape of what you expect back */
 interface VerifySellerResponse {
   message: string;
-  data: any
+  data: Sellers;
 }
 
 /**
@@ -34,7 +35,7 @@ export const verifySeller = async ({
 
   try {
     const response: AxiosResponse<VerifySellerResponse> = await axios.post(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/auth/verify-seller`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/auth/seller/verify`,
       {
         ...sellerData,
         otp: otp,

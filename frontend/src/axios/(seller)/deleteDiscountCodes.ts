@@ -14,7 +14,7 @@ export const deleteDiscountCode = async ({
 }: DeleteDiscountCodeParams): Promise<DeleteDiscountCodeResponse> => {
     console.log("discountCodeId",discountCodeId);
   const res = await axiosInstance.delete(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/product/delete-discountCode/${discountCodeId}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/product/seller/delete-discountCode/${discountCodeId}`,
     {
       withCredentials: true,
     }

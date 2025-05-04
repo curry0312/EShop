@@ -16,7 +16,7 @@ export const signupSeller = async ({
   country,
 }: SignupSellerParams) => {
   const res = await axios.post(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/auth/seller-registration`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/auth/seller/register`,
     {
       name,
       email,

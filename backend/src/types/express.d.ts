@@ -11,3 +11,10 @@ declare global {
 }
 
 export {};  // <<== 一定要有！！！
+
+import { Request } from "express";
+
+export interface AuthedRequest extends Request {
+  account?: User | Seller;
+  role?: "user" | "seller";
+}

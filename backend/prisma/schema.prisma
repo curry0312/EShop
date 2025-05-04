@@ -7,6 +7,7 @@
 generator client {
   provider = "prisma-client-js"
   output   = "../generated/prisma"
+  binaryTargets = ["native", "linux-musl-arm64-openssl-3.0.x"]
 }
 
 datasource db {
@@ -52,7 +53,6 @@ model sellers {
   country      String
 
   shop   shops?
-  shopId String? @unique
 
   discount_codes discount_codes[]
 

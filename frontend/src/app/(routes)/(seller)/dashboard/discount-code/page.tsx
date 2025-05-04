@@ -24,7 +24,7 @@ const CreateDiscountCodeSchema = z.object({
 
 type CreateDiscountCodeSchemaType = z.infer<typeof CreateDiscountCodeSchema>;
 
-export default function page() {
+export default function Page() {
   const [showModal, setShowModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteDiscountCodeId, setDeleteDiscountCodeId] = useState("");

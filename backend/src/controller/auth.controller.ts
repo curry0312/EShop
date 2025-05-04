@@ -67,7 +67,7 @@ export const verifyUser = async (
 
   const isOtpValid = await verifyOtp({ email, otp });
 
-  console.log("isOtpValid", isOtpValid)
+  console.log("isOtpValid", isOtpValid);
 
   if (!isOtpValid) {
     return next(new ValidationError("otp is invalid"));
@@ -128,8 +128,8 @@ export const userLogin = async (
     );
   }
 
-  console.log("Input password", password)
-  console.log("password in db", user.password)
+  console.log("Input password", password);
+  console.log("password in db", user.password);
 
   const isPasswordMatched = await bcrypt.compare(password, user.password);
 
@@ -235,7 +235,9 @@ export const refreshUserAccessToken = async (
         "access-token": newAccessToken,
       },
     });
-  } catch (error) {}
+  } catch (error) {
+    return next(error);
+  }
 };
 
 //User forgot password
@@ -624,6 +626,7 @@ export const refreshSellerAccessToken = async (
       },
     });
   } catch (error) {
+    console.log("Error in refreshSellerAccessToken =", error);
     return next(error);
   }
 };

@@ -9,7 +9,7 @@ type GetProductsResponse = {
 
 export const getProducts = async (): Promise<GetProductsResponse> => {
     const res = await axiosInstance.get(
-        `${process.env.NEXT_PUBLIC_API_URL}/product/api/get-products`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/product/seller/get-products`,
         {
             withCredentials: true,
         }

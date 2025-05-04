@@ -1,0 +1,37 @@
+# -------- Build 階段 -----------
+FROM node:20-alpine AS builder
+
+WORKDIR /app
+
+# 安裝依賴
+COPY package*.json ./
+RUN npm install
+
+# 複製程式碼
+COPY . .
+
+# ✅ 复制 .env.production 为 .env，让 Next.js 能自动读取
+COPY .env.production .env
+
+# ✅ Debug：确认 .env 被注入
+RUN echo "🧪 .env 内容:" && cat .env
+
+
+# 執行 Next.js 打包
+RUN npm run build
+
+# -------- Run 階段 -----------
+FROM node:20-alpine AS runner
+WORKDIR /app
+
+# 只複製必要檔案
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package.json ./package.json
+COPY --from=builder /app/next.config.ts ./next.config.ts
+
+EXPOSE 3000
+CMD ["npm", "start"]
+
+

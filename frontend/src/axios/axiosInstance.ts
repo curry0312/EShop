@@ -1,7 +1,13 @@
 import axios from "axios";
 
+const isServer = typeof window === "undefined";
+
+const baseURL = isServer
+  ? "http://backend:8080" // SSR 階段用 Docker container 內的名稱
+  : process.env.NEXT_PUBLIC_API_URL; // CSR 階段來自 .env.production，對 browser 是 localhost
+
 const axiosInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  baseURL,
   withCredentials: true,
 });
 
@@ -9,9 +15,9 @@ let isRefreshing = false;
 let refreshSubscribers: (() => void)[] = [];
 
 const handleLogout = () => {
-  if (window.location.pathname !== "/login") {
-    window.location.href = "/login";
-  }
+  // if (window.location.pathname !== "/login") {
+  //   window.location.href = "/login";
+  // }
 };
 
 //If accessToken token is expired, refresh it, and prepare for quened requests
@@ -36,37 +42,39 @@ axiosInstance.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
-    if (error?.response?.status === 401 && !originalRequest?._retry) {
-      // 進來代表：
-      // 1) 收到 401
-      // 2) 這個請求還沒標記過 _retry（避免重複進來）
+
+    if (error?.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+
+      const isSellerRequest = originalRequest.url?.includes("/seller");
+      // const isUserRequest = !isSellerRequest; // 若不是 seller，預設為 user
+
       if (isRefreshing) {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
           subscribeTokenRefresh(() => resolve(axiosInstance(originalRequest)));
         });
       }
-      originalRequest._retry = true;
-      isRefreshing = true; // 開始「刷新流程」
+
+      isRefreshing = true;
+
       try {
+        const refreshUrl = isSellerRequest
+          ? "/api/auth/seller/refresh-token"
+          : "/api/auth/user/refresh-token";
+
         await axios.post(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/auth/refresh-token-user`,
+          `${baseURL}${refreshUrl}`,
           {},
-          {
-            withCredentials: true,
-          }
+          { withCredentials: true }
         );
-        // 刷新成功，把 isRefreshing = false
-        isRefreshing = false;
-        // 把所有暫存在 subscribers 裡、等待重試的請求都一次喚醒、並重送
+
         await onRefreshTokenSuccess();
-        // 然後把自己這支請求也重送一次
         return axiosInstance(originalRequest);
-      } catch (error) {
-        console.error(error);
-        isRefreshing = false;
+      } catch (refreshError) {
+        console.error("Refresh token failed:", refreshError);
         refreshSubscribers = [];
-        handleLogout();
-        return Promise.reject(error);
+        handleLogout(); // 登出或清除狀態
+        return Promise.reject(refreshError);
       } finally {
         isRefreshing = false;
       }
@@ -77,7 +85,6 @@ axiosInstance.interceptors.response.use(
 );
 
 export default axiosInstance;
-
 
 //! 還沒在刷新中（isRefreshing === false）
 

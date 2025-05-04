@@ -13,7 +13,7 @@ export const deleteProduct = async ({
   productId,
 }: DeleteProductParams): Promise<DeleteProductResponse> => {
   const res = await axiosInstance.delete(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/product/delete-product/${productId}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/product/seller/delete-product/${productId}`,
     {
       withCredentials: true,
     }

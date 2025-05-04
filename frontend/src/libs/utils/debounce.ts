@@ -1,4 +1,4 @@
-export default function debounce<T extends (...args: any[]) => void>(fn: T, delay: number) {
+export default function debounce<T extends (...args: unknown[]) => void>(fn: T, delay: number) {
     let timeoutId: NodeJS.Timeout | null;
     return function (...args: any[]) {
         if (timeoutId) {

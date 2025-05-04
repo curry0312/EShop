@@ -177,6 +177,8 @@ export const createProduct = async (
       where: { discountCode: discountCode },
     });
 
+    console.log("req.account",req.account)
+
     const sellerId = req.account.id;
     const shopId = req.account.shop.id;
 

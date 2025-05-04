@@ -21,11 +21,13 @@ const FormSchema = z.object({
 
 type FormSchemaType = z.infer<typeof FormSchema>;
 
-export default function page() {
+export default function Page() {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
   const router = useRouter();
+
+  console.log("🔥 API BASE URL:", process.env.NEXT_PUBLIC_API_URL);
 
   const {
     register,

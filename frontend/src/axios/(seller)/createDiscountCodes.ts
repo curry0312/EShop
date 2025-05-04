@@ -21,7 +21,7 @@ export const createDiscountCode = async ({
   discountType
 }: CreateDiscountCodeParams): Promise<CreateDiscountCodeResponse> => {
   const res = await axiosInstance.post(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/product/create-discountCode`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/product/seller/create-discountCode`,
     {
       title,
       discountCode,

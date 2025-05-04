@@ -10,8 +10,9 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { getProducts } from "@/axios/(seller)/getProducts";
 import { deleteProduct } from "@/axios/(seller)/deleteProduct";
+import { Products } from "@/types/database-type";
 
-export default function page() {
+export default function Page() {
   const [showModal, setShowModal] = useState(false);
   const [selectedProductData, setSelectedProductData] =
     useState<Products | null>(null);

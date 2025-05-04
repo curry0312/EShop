@@ -30,7 +30,7 @@ const SellerFormSchema = z.object({
 
 export type SellerFormSchemaType = z.infer<typeof SellerFormSchema>;
 
-export default function page() {
+export default function Page() {
   const [activeStep, setActiveStep] = useState(1);
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [canResend, setCanResend] = useState<boolean>(true);
@@ -316,7 +316,7 @@ export default function page() {
 
                 <p className="text-center text-gray-500 my-4">
                   Already have an account?{" "}
-                  <Link href="/login" className="text-[#000099]">
+                  <Link href="/login-seller" className="text-[#000099]">
                     Login
                   </Link>
                 </p>

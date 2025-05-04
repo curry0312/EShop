@@ -1,12 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import axiosInstance from "../axios/axiosInstance";
-import { Sellers, Shops } from "@/types/database-type";
-
-//fetch user
-const fetchSeller = async (): Promise<Sellers & { shop: Shops } > => {
-  const res = await axiosInstance.get("/api/auth/get-logged-in-seller");
-  return res.data.data
-};
+import { getLoginSeller } from "@/axios/(seller)/getLoginSeller";
 
 const useSeller = () => {
   const {
@@ -16,7 +9,7 @@ const useSeller = () => {
     refetch,
   } = useQuery({
     queryKey: ["get-seller"],
-    queryFn: fetchSeller,
+    queryFn: getLoginSeller,
     staleTime: 5 * 60 * 1000, //cache for 5 minutes
     retry: 1,
   });

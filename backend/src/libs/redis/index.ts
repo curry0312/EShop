@@ -12,6 +12,7 @@ if (!redisUrl) {
   throw new Error('REDIS_URL environment variable is not set');
 }
 
+
 const redis = new Redis(redisUrl); // 支援 rediss:// (TLS)
 
 export default redis;

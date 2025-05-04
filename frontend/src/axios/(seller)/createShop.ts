@@ -18,7 +18,7 @@ export async function createShop(
   data: CreateShopParams
 ): Promise<CreateShopResponse> {
   const response = await axios.post(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/auth/create-shop`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/auth/seller/create-shop`,
     data,
     {
       withCredentials: true,

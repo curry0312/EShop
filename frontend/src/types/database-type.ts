@@ -97,7 +97,7 @@ export type Images = {
     tags: string[];
     stock: string;
     cash_on_delivery: string;
-    custom_specifications?: any; // Prisma Json 型態，這邊用 any，如果你要更精準，可以自己定義 interface
+    custom_specifications?: Array<Record<string, string>>; // Prisma Json 型態，這邊用 any，如果你要更精準，可以自己定義 interface
     images: Images[];
     ratings: number;
     sellerId: string;

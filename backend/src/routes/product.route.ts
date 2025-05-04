@@ -9,41 +9,41 @@ import {
   getProducts,
   getSpecificDiscountCode,
 } from "../controller/product.controller";
-import { isAuthenticated } from "../middleware/isAuthenticated";
+import { isSellerAuthenticated } from "../middleware/isAuthenticated";
 
 const productRouter = Router();
 
 //!** Category Routes **//
 
-productRouter.get("/get-categories", getCategories);
+productRouter.get("/get-categories", isSellerAuthenticated ,getCategories);
 
 //!** Product Routes **//
 
-productRouter.post("/create-product", isAuthenticated, createProduct);
+productRouter.post("/create-product", isSellerAuthenticated, createProduct);
 
-productRouter.get("/get-products", isAuthenticated, getProducts);
+productRouter.get("/get-products", isSellerAuthenticated, getProducts);
 
 productRouter.delete(
   "/delete-product/:productId",
-  isAuthenticated,
+  isSellerAuthenticated,
   deleteProduct
 );
 
 //!** Discount Code Routes **//
 
-productRouter.post("/create-discountCode", isAuthenticated, createDiscountCode);
+productRouter.post("/create-discountCode", isSellerAuthenticated, createDiscountCode);
 
-productRouter.get("/get-discountCodes", isAuthenticated, getDiscountCodes);
+productRouter.get("/get-discountCodes", isSellerAuthenticated, getDiscountCodes);
 
 productRouter.get(
   "/get-discountCode/:discountCode",
-  isAuthenticated,
+  isSellerAuthenticated,
   getSpecificDiscountCode
 );
 
 productRouter.delete(
   "/delete-discountCode/:discountCodeId",
-  isAuthenticated,
+  isSellerAuthenticated,
   deleteDiscountCode
 );
 

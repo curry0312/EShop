@@ -1,0 +1,25 @@
+FROM node:20-alpine AS builder
+
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm install
+
+COPY . .
+
+COPY .env.production .env
+
+# ✅ Prisma generate（重要）
+RUN npx prisma generate
+
+RUN npm run build  # 假設 tsc 編譯到 dist/
+
+FROM node:20-alpine AS runner
+
+WORKDIR /app
+COPY --from=builder /app ./
+COPY src/swagger-output.json ./dist/swagger-output.json
+
+EXPOSE 8080
+CMD ["node", "dist/main.js"]
+
